@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import net.mgsx.overtime.OverTime;
 import net.mgsx.overtime.logic.ClockControl;
 import net.mgsx.overtime.logic.GameState;
+import net.mgsx.overtime.ui.MicroClock;
 import net.mgsx.overtime.ui.WorldGroup;
 import net.mgsx.overtime.utils.ActorIntersector;
 import net.mgsx.overtime.utils.ArrayUtils;
@@ -77,6 +78,8 @@ public class GameScreen extends ScreenAdapter
 	
 	private int heroBlink;
 	
+	private MicroClock miniclock;
+	
 	public GameScreen() {
 		skin = new Skin(Gdx.files.internal("skin.json"));
 		
@@ -103,6 +106,12 @@ public class GameScreen extends ScreenAdapter
 		
 		clockControl = new ClockControl(world.clock);
 		clockControl.setCurrentTime();
+		
+		miniclock = new MicroClock(skin, 1);
+		stage.addActor(miniclock);
+		
+		miniclock.setPosition(66, 1);
+		miniclock.getColor().a = 0;
 		
 		// XXX
 		// clockControl.setTime(23, 55);
@@ -225,9 +234,16 @@ public class GameScreen extends ScreenAdapter
 		
 		// TODO FREEZE bonus ?
 		timeout += delta;
-		if(timeout >= 1){
+		if(timeout > 1){
 			timeout = 0;
-			frozen = false;
+			
+			if(frozen){
+				miniclock.clearActions();
+				miniclock.getColor().a = 1;
+				miniclock.addAction(Actions.alpha(0, .1f));
+				frozen = false;
+			}
+			
 			
 			nextBack--;
 			if(nextBack <= 0){
@@ -235,6 +251,10 @@ public class GameScreen extends ScreenAdapter
 			}
 			
 			incClock(timeInc, false, false);
+		}
+		
+		if(timeout < 0){
+			miniclock.setTime((int)-timeout);
 		}
 		
 		float speed = 30f;
@@ -378,6 +398,19 @@ public class GameScreen extends ScreenAdapter
 	private void applyFreeze() {
 		timeout = -10;
 		frozen = true;
+		
+		miniclock.clearActions();
+		miniclock.addAction(
+			Actions.sequence(
+				Actions.repeat(4, Actions.sequence(
+						Actions.alpha(.2f, .05f),
+						Actions.alpha(1f, .05f)
+				)), 
+				Actions.forever(Actions.sequence(
+						Actions.alpha(.5f, .25f),
+						Actions.alpha(1f, .25f)
+				))
+			));
 	}
 
 	private void genBack() {

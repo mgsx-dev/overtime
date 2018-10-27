@@ -6,49 +6,49 @@ filter: Nearest,Nearest
 repeat: none
 clocks-freeze
   rotate: false
-  xy: 149, 90
+  xy: 142, 52
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 clocks-inc-down
   rotate: false
-  xy: 102, 29
+  xy: 156, 79
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 clocks-inc-up
   rotate: false
-  xy: 67, 18
+  xy: 102, 29
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 clocks-random
   rotate: false
-  xy: 149, 81
+  xy: 67, 18
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 clocks-shift-left
   rotate: false
-  xy: 158, 90
+  xy: 156, 70
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 clocks-shift-right
   rotate: false
-  xy: 76, 18
+  xy: 165, 79
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 clocks-swap
   rotate: false
-  xy: 149, 72
+  xy: 76, 18
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
@@ -81,16 +81,23 @@ end-timeout
   orig: 56, 16
   offset: 0, 0
   index: -1
-mini-digits
+micro-digits
   rotate: false
   xy: 142, 99
   size: 63, 9
   orig: 63, 9
   offset: 0, 0
   index: -1
+mini-digits
+  rotate: false
+  xy: 142, 88
+  size: 63, 9
+  orig: 63, 9
+  offset: 0, 0
+  index: -1
 segment-extra-bottom
   rotate: false
-  xy: 142, 72
+  xy: 142, 61
   size: 5, 25
   orig: 5, 25
   offset: 0, 0
@@ -111,7 +118,7 @@ segment-extra-right
   index: -1
 segment-extra-top
   rotate: false
-  xy: 142, 45
+  xy: 149, 61
   size: 5, 25
   orig: 5, 25
   offset: 0, 0
