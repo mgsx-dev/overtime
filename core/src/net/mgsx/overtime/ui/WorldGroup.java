@@ -9,8 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 
-import net.mgsx.overtime.utils.ArrayUtils;
-
 public class WorldGroup extends Group{
 	
 	Color offColor = new Color(0x1f1f1fff);
@@ -20,7 +18,8 @@ public class WorldGroup extends Group{
 	public ClockGroup clock;
 	public Group backGroup;
 	private Array<Image> backItems = new Array<Image>();
-
+	private int backSwitch;
+	
 	public WorldGroup(Skin skin) {
 		this.skin = skin;
 		
@@ -46,9 +45,9 @@ public class WorldGroup extends Group{
 		addSlicesV(102);
 		addSlicesV(118);
 		
-		addSlicesH(24);
-		addSlicesH(38);
-		addSlicesH(52);
+//		addSlicesH(24);
+//		addSlicesH(38);
+//		addSlicesH(52);
 		
 		for(int i=0 ; i<backItems.size ; i++){
 			enableBackSeg(backItems.get(i), false, false);
@@ -71,13 +70,35 @@ public class WorldGroup extends Group{
 		img.setPosition(x, y);
 		backGroup.addActor(img);
 		backItems.add(img);
+		img.setUserObject(true);
 	}
 	
 	public void randomizeBackSegs(int numEnabled, boolean smooth){
-		if(numEnabled < 0) numEnabled = backItems.size + numEnabled;
-		ArrayUtils.randomize(backItems);
+		
+		// XXX full rnadom version
+//		if(numEnabled < 0) numEnabled = backItems.size + numEnabled;
+//		ArrayUtils.randomize(backItems);
+//		for(int i=0 ; i<backItems.size ; i++){
+//			enableBackSeg(backItems.get(i), i < numEnabled, smooth);
+//		}
+		
+		
+		// XXX one on 2 version
+//		backSwitch = (backSwitch+1)%2;
+//		for(int i=0 ; i<backItems.size ; i++){
+//			boolean enable = (i + backSwitch + i/2) % 2 == 0;
+//			enableBackSeg(backItems.get(i), enable, smooth);
+//		}
+	}
+	
+	private boolean isBackSegEnable(Image actor) {
+		return (Boolean)actor.getUserObject();
+	}
+
+	public void enableBack(int clockRank, boolean smooth) {
 		for(int i=0 ; i<backItems.size ; i++){
-			enableBackSeg(backItems.get(i), i < numEnabled, smooth);
+			boolean enable = i/4  == 3 - clockRank;
+			enableBackSeg(backItems.get(i), enable, smooth);
 		}
 	}
 
@@ -86,6 +107,7 @@ public class WorldGroup extends Group{
 		if(smooth){
 			if(enabled != isBackSegEnable(actor))
 			{
+				actor.setUserObject(enabled);
 				actor.clearActions();
 				if(enabled){
 					actor.addAction(Actions.sequence(
@@ -100,14 +122,11 @@ public class WorldGroup extends Group{
 				}
 			}
 		}else{
+			actor.setUserObject(enabled);
 			actor.setColor(enabled ? onColor : offColor);
 			actor.setTouchable(enabled ? Touchable.enabled : Touchable.disabled);
 		}
 	}
 
-	private boolean isBackSegEnable(Image actor) {
-		return actor.getTouchable() == Touchable.enabled;
-	}
-	
 	
 }

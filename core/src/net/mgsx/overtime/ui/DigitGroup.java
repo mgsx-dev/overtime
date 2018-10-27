@@ -15,7 +15,7 @@ public class DigitGroup extends Group{
 	private static final int [] DIGIT_3 = {1,1,1,1,0,0,1};
 	private static final int [] DIGIT_4 = {0,1,1,0,0,1,1};
 	private static final int [] DIGIT_5 = {1,0,1,1,0,1,1};
-	private static final int [] DIGIT_6 = {1,1,1,1,1,0,1};
+	private static final int [] DIGIT_6 = {1,0,1,1,1,1,1};
 	private static final int [] DIGIT_7 = {1,1,1,0,0,0,0};
 	private static final int [] DIGIT_8 = {1,1,1,1,1,1,1};
 	private static final int [] DIGIT_9 = {1,1,1,1,0,1,1};
