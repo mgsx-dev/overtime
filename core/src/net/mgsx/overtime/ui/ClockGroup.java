@@ -136,5 +136,9 @@ public class ClockGroup extends Group
 		setTime(MathUtils.random(MAX_TIME));
 	}
 
+	public void setTime(int hours, int minutes) {
+		setTime(hours * 60 + minutes);
+	}
+
 	
 }

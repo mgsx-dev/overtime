@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import net.mgsx.overtime.OverTime;
+import net.mgsx.overtime.ui.MiniClock;
 
 public class MenuScreen extends ScreenAdapter
 {
@@ -21,6 +22,9 @@ public class MenuScreen extends ScreenAdapter
 	
 	private Color bgColor = new Color(0,0,0,1);
 	private Skin skin;
+
+	private MiniClock miniClock;
+	
 	public MenuScreen() {
 		skin = new Skin(Gdx.files.internal("skin.json"));
 		
@@ -30,6 +34,9 @@ public class MenuScreen extends ScreenAdapter
 		
 		Image bt = new Image(skin, "start");
 		stage.addActor(bt);
+		
+		stage.addActor(miniClock = new MiniClock(skin));
+		miniClock.setPosition(42, 20);
 		
 		bt.addListener(new ClickListener(){
 			@Override

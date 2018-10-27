@@ -90,6 +90,8 @@ public class GameScreen extends ScreenAdapter
 		
 		world.clock.setCurrentTime();
 		
+		world.clock.setTime(23, 59);
+		
 		world.enableBack(clockRank, false);
 		// stage.setDebugAll(true);
 	}
