@@ -12,11 +12,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class ClockGroup extends Group
 {
+	static Color offColor = new Color( 0, .2f,0, 1f);
+	static Color onColor = Color.GREEN;
+
 	public enum Mode{
 		FREE, REALTIME, FRAMES
 	}
 	
-	private Mode mode = Mode.REALTIME;
+	private Mode mode = Mode.FRAMES;
 	
 	private DigitGroup [] digits = new DigitGroup[4];
 	private Image [] dots = new Image[2];
@@ -71,7 +74,7 @@ public class ClockGroup extends Group
 			}
 		}
 		else if(mode == Mode.FRAMES){
-			long frame = Gdx.graphics.getFrameId() / 10;
+			long frame = Gdx.graphics.getFrameId() / 60;
 			boolean sec = frame % 2 == 0;
 			digits[3].setValue((int)(frame % 10));
 			frame /= 10;
@@ -91,7 +94,7 @@ public class ClockGroup extends Group
 	}
 	
 	private void setEnabled(Actor actor, boolean enabled){
-		actor.setColor(enabled ? Color.WHITE : Color.DARK_GRAY);
+		actor.setColor(enabled ? onColor : offColor);
 		actor.setTouchable(enabled ? Touchable.enabled : Touchable.disabled);
 	}
 }

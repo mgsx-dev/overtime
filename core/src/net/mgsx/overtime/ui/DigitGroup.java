@@ -1,6 +1,5 @@
 package net.mgsx.overtime.ui;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -77,7 +76,7 @@ public class DigitGroup extends Group{
 	}
 	
 	private void setEnabled(Actor actor, boolean enabled){
-		actor.setColor(enabled ? Color.WHITE : Color.DARK_GRAY);
+		actor.setColor(enabled ? ClockGroup.onColor : ClockGroup.offColor);
 		actor.setTouchable(enabled ? Touchable.enabled : Touchable.disabled);
 	}
 }

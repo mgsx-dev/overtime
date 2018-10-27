@@ -1,6 +1,7 @@
 package net.mgsx.overtime.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
@@ -14,7 +15,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import net.mgsx.overtime.OverTime;
-import net.mgsx.overtime.ui.ClockGroup;
+import net.mgsx.overtime.ui.WorldGroup;
 import net.mgsx.overtime.utils.ActorIntersector;
 import net.mgsx.overtime.utils.UniControl;
 
@@ -24,7 +25,7 @@ public class GameScreen extends ScreenAdapter
 	
 	private Image hero;
 	
-	private ClockGroup clock;
+	private WorldGroup world;
 	
 	private Vector2 heroPosition = new Vector2();
 	
@@ -37,14 +38,11 @@ public class GameScreen extends ScreenAdapter
 		
 		stage = new Stage(new FitViewport(OverTime.WORLD_WIDTH, OverTime.WORLD_HEIGHT));
 		
-		stage.addActor(new Image(skin, "demo"));
-		
 		hero = new Image(skin, "dot");
 		hero.setColor(Color.RED);
 		
-		clock = new ClockGroup(skin);
-		clock.setPosition(15, 24);
-		stage.addActor(clock);
+		world = new WorldGroup(skin);
+		stage.addActor(world);
 		
 		stage.addActor(hero);
 		
@@ -53,6 +51,14 @@ public class GameScreen extends ScreenAdapter
 	
 	@Override
 	public void render(float delta) {
+		
+		// XXX DEBUG
+		if(Gdx.input.isKeyJustPressed(Input.Keys.P)){
+			world.randomizeBackSegs(7, true);
+		}
+		// XXX DEBUG
+		
+		
 		
 		float speed = 30f;
 		
@@ -71,7 +77,7 @@ public class GameScreen extends ScreenAdapter
 		
 		heroRectangle.set((int)heroPosition.x + 1, (int)heroPosition.y + 1, (int)hero.getWidth() - 2, (int)hero.getHeight() - 2);
 		
-		if(ActorIntersector.intersect(clock, heroRectangle)){
+		if(ActorIntersector.intersect(world, heroRectangle)){
 			heroPosition.set(hero.getX(), hero.getY());
 			hero.setColor(Color.RED);
 		}else{
@@ -82,10 +88,11 @@ public class GameScreen extends ScreenAdapter
 		heroRectangle.set((int)heroPosition.x + 1, (int)heroPosition.y + 1, (int)hero.getWidth() - 2, (int)hero.getHeight() - 2);
 		
 		intersectedActors.clear();
-		if(ActorIntersector.intersect(intersectedActors, clock, heroRectangle, false)){
+		if(ActorIntersector.intersect(intersectedActors, world, heroRectangle, false)){
 			for(Actor actor : intersectedActors){
-				if(actor.getTouchable() == Touchable.disabled){
+				if(actor.getTouchable() == Touchable.disabled || true){
 					hero.setColor(Color.ORANGE);
+					// actor.setColor(Color.ORANGE);
 					// actor.setVisible(false);
 				}
 			}

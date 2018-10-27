@@ -1,33 +1,61 @@
 
 skin.png
-size: 256,128
+size: 64,32
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-demo
-  rotate: false
-  xy: 2, 15
-  size: 138, 81
-  orig: 138, 81
-  offset: 0, 0
-  index: -1
 dot
   rotate: false
-  xy: 2, 2
+  xy: 55, 23
   size: 4, 4
   orig: 4, 4
   offset: 0, 0
   index: -1
+segment-extra-bottom
+  rotate: false
+  xy: 2, 2
+  size: 5, 25
+  orig: 5, 25
+  offset: 0, 0
+  index: -1
+segment-extra-left
+  rotate: false
+  xy: 16, 15
+  size: 17, 5
+  orig: 17, 5
+  offset: 0, 0
+  index: -1
+segment-extra-right
+  rotate: false
+  xy: 36, 22
+  size: 17, 5
+  orig: 17, 5
+  offset: 0, 0
+  index: -1
+segment-extra-top
+  rotate: false
+  xy: 9, 2
+  size: 5, 25
+  orig: 5, 25
+  offset: 0, 0
+  index: -1
 segment-h
   rotate: false
-  xy: 2, 8
+  xy: 16, 8
   size: 15, 5
   orig: 15, 5
   offset: 0, 0
   index: -1
+segment-middle-h
+  rotate: false
+  xy: 16, 22
+  size: 18, 5
+  orig: 18, 5
+  offset: 0, 0
+  index: -1
 segment-v
   rotate: false
-  xy: 142, 85
+  xy: 35, 9
   size: 5, 11
   orig: 5, 11
   offset: 0, 0
