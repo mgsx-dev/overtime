@@ -10,4 +10,8 @@ public class ArrayUtils {
 		}
 		return array;
 	}
+
+	public static <T> T random(T[] values) {
+		return values[MathUtils.random(values.length-1)];
+	}
 }

@@ -56,7 +56,7 @@ outdir = "$dst"
 img = pdb.gimp_file_load(filename, filename)
 			
 for layer in img.layers:
-	new_name = outdir + "/" + layer.name + ".png"
+	new_name = outdir + layer.name + ".png"
 	pdb.gimp_file_save(img, layer, new_name, new_name)
 			
 pdb.gimp_image_delete(img)
@@ -66,7 +66,7 @@ pdb.gimp_quit(1)
 	}
 	
 	t.doFirst { 
-		new File(dst).mkdirs()
+		// new File(dst).mkdirs()
 	}
 
 

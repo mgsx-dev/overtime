@@ -26,6 +26,7 @@ task buildAssets(group: 'gdx'){}
 def prePackTasks = []
 
 prePackTasks << gdxRawCopy("src/skin", "$buildDir/unpacked")
+prePackTasks << gimpExportLayers("src/clocks.xcf", "$buildDir/unpacked/clocks-")
 
 def packTask = gdxAtlasPack("$buildDir/unpacked", "../android/assets/skin")
 

@@ -13,7 +13,7 @@ import net.mgsx.overtime.utils.ArrayUtils;
 
 public class WorldGroup extends Group{
 	
-	Color offColor = Color.BLACK;
+	Color offColor = new Color(0x1f1f1fff);
 	Color onColor = Color.DARK_GRAY;
 
 	private Skin skin;
@@ -62,7 +62,7 @@ public class WorldGroup extends Group{
 
 	private void addSlicesH(int y) {
 		addSlice(0, y, "segment-extra-left");
-		addSlice(60, y, "segment-middle-h");
+		// addSlice(60, y, "segment-middle-h");
 		addSlice(121, y, "segment-extra-right");
 	}
 	
