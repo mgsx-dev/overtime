@@ -144,6 +144,10 @@ public class GameScreen extends ScreenAdapter
 		}
 		// XXX DEBUG
 		
+		if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+			OverTime.i().setScreen(new MenuScreen());
+		}
+		
 		// TODO FREEZE bonus ?
 		timeout += delta;
 		if(timeout >= 1){

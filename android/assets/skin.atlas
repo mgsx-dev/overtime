@@ -1,111 +1,125 @@
 
 skin.png
-size: 64,32
+size: 256,128
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 clocks-freeze
   rotate: false
-  xy: 55, 23
+  xy: 149, 107
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 clocks-inc-down
   rotate: false
-  xy: 16, 2
+  xy: 9, 13
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 clocks-inc-up
   rotate: false
-  xy: 25, 2
+  xy: 149, 98
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 clocks-random
   rotate: false
-  xy: 35, 16
+  xy: 158, 107
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 clocks-shift-left
   rotate: false
-  xy: 44, 16
+  xy: 9, 4
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 clocks-shift-right
   rotate: false
-  xy: 53, 14
+  xy: 18, 13
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 clocks-swap
   rotate: false
-  xy: 41, 7
+  xy: 149, 89
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 dot
   rotate: false
-  xy: 50, 8
+  xy: 168, 117
   size: 4, 4
   orig: 4, 4
   offset: 0, 0
   index: -1
 segment-extra-bottom
   rotate: false
-  xy: 2, 5
+  xy: 142, 96
   size: 5, 25
   orig: 5, 25
   offset: 0, 0
   index: -1
 segment-extra-left
   rotate: false
-  xy: 16, 18
+  xy: 149, 116
   size: 17, 5
   orig: 17, 5
   offset: 0, 0
   index: -1
 segment-extra-right
   rotate: false
-  xy: 36, 25
+  xy: 9, 22
   size: 17, 5
   orig: 17, 5
   offset: 0, 0
   index: -1
 segment-extra-top
   rotate: false
-  xy: 9, 5
+  xy: 2, 2
   size: 5, 25
   orig: 5, 25
   offset: 0, 0
   index: -1
 segment-h
   rotate: false
-  xy: 16, 11
+  xy: 63, 33
   size: 15, 5
   orig: 15, 5
   offset: 0, 0
   index: -1
 segment-middle-h
   rotate: false
-  xy: 16, 25
+  xy: 43, 33
   size: 18, 5
   orig: 18, 5
   offset: 0, 0
   index: -1
 segment-v
   rotate: false
-  xy: 34, 3
+  xy: 142, 83
   size: 5, 11
   orig: 5, 11
+  offset: 0, 0
+  index: -1
+start
+  rotate: false
+  xy: 2, 29
+  size: 39, 9
+  orig: 39, 9
+  offset: 0, 0
+  index: -1
+title
+  rotate: false
+  xy: 2, 40
+  size: 138, 81
+  orig: 138, 81
   offset: 0, 0
   index: -1
