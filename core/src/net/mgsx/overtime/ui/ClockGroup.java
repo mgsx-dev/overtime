@@ -4,8 +4,9 @@ import java.util.Calendar;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
@@ -15,7 +16,7 @@ public class ClockGroup extends Group
 		FREE, REALTIME, FRAMES
 	}
 	
-	private Mode mode = Mode.FRAMES;
+	private Mode mode = Mode.REALTIME;
 	
 	private DigitGroup [] digits = new DigitGroup[4];
 	private Image [] dots = new Image[2];
@@ -31,6 +32,9 @@ public class ClockGroup extends Group
 		
 		addDot(0, 52, 9);
 		addDot(1, 52, 20);
+		
+		setSize(108, 33);
+		setTouchable(Touchable.childrenOnly);
 	}
 
 	private void addDigit(int index, int x, int y) {
@@ -45,18 +49,6 @@ public class ClockGroup extends Group
 		img.setPosition(x, y);
 		addActor(img);
 		dots[index] = img;
-	}
-	
-	public void blink(boolean blink){
-		for(Image dot : dots){
-			dot.addAction(
-				Actions.forever(
-					Actions.sequence(
-						Actions.alpha(0), 
-						Actions.delay(1f), 
-						Actions.alpha(1), 
-						Actions.delay(1f))));
-		}
 	}
 	
 	@Override
@@ -75,7 +67,7 @@ public class ClockGroup extends Group
 			digits[3].setValue(m%10);
 			
 			for(Image dot : dots){
-				dot.setColor(ms < 500 ? Color.WHITE : Color.DARK_GRAY);
+				setEnabled(dot, ms < 500);
 			}
 		}
 		else if(mode == Mode.FRAMES){
@@ -92,9 +84,14 @@ public class ClockGroup extends Group
 			digits[0].setValue((int)(frame % 10));
 			
 			for(Image dot : dots){
-				dot.setColor(sec ? Color.WHITE : Color.DARK_GRAY);
+				setEnabled(dot, sec);
 			}
 		}
 		super.act(delta);
+	}
+	
+	private void setEnabled(Actor actor, boolean enabled){
+		actor.setColor(enabled ? Color.WHITE : Color.DARK_GRAY);
+		actor.setTouchable(enabled ? Touchable.enabled : Touchable.disabled);
 	}
 }

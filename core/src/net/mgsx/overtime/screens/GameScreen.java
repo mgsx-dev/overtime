@@ -3,6 +3,7 @@ package net.mgsx.overtime.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import net.mgsx.overtime.OverTime;
 import net.mgsx.overtime.ui.ClockGroup;
+import net.mgsx.overtime.utils.ActorIntersector;
 import net.mgsx.overtime.utils.UniControl;
 
 public class GameScreen extends ScreenAdapter
@@ -22,6 +24,8 @@ public class GameScreen extends ScreenAdapter
 	private ClockGroup clock;
 	
 	private Vector2 heroPosition = new Vector2();
+	
+	private Rectangle heroRectangle = new Rectangle();
 	
 	public GameScreen() {
 		Skin skin = new Skin(Gdx.files.internal("skin.json"));
@@ -39,6 +43,7 @@ public class GameScreen extends ScreenAdapter
 		
 		stage.addActor(hero);
 		
+		// stage.setDebugAll(true);
 	}
 	
 	@Override
@@ -59,7 +64,15 @@ public class GameScreen extends ScreenAdapter
 			heroPosition.y -= delta * speed;
 		}
 		
-		hero.setPosition((int)heroPosition.x, (int)heroPosition.y);
+		heroRectangle.set((int)heroPosition.x + 1, (int)heroPosition.y + 1, (int)hero.getWidth() - 2, (int)hero.getHeight() - 2);
+		
+		if(ActorIntersector.intersect(clock, heroRectangle)){
+			heroPosition.set(hero.getX(), hero.getY());
+			hero.setColor(Color.RED);
+		}else{
+			hero.setPosition((int)heroPosition.x, (int)heroPosition.y);
+			hero.setColor(Color.BLUE);
+		}
 		
 		stage.act();
 		stage.draw();
