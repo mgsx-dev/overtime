@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.utils.Array;
 
 public class ActorIntersector {
 	private static final Rectangle r = new Rectangle();
@@ -18,9 +19,12 @@ public class ActorIntersector {
 		return intersect(actor, actorToRectangle(rectActor, r));
 	}
 	
-	public static boolean intersect(Actor actor, Rectangle rect)
+	public static boolean intersect(Actor actor, Rectangle rect){
+		return intersect(null, actor, rect, true);
+	}
+	public static boolean intersect(Array<Actor> result, Actor actor, Rectangle rect, boolean checkTouchable)
 	{
-		if(actor.getTouchable() == Touchable.disabled){
+		if(checkTouchable && actor.getTouchable() == Touchable.disabled){
 			return false;
 		}
 		
@@ -28,16 +32,17 @@ public class ActorIntersector {
 		
 		if(r2.overlaps(rect)){
 			if(actor instanceof Group){
-				if(actor.getTouchable() == Touchable.enabled) return true;
+				if(checkTouchable && actor.getTouchable() == Touchable.enabled) return true;
 				rect.x -= actor.getX();
 				rect.y -= actor.getY();
 				for(Actor child : ((Group) actor).getChildren()){
-					if(intersect(child, rect)){
+					if(intersect(result, child, rect, checkTouchable)){
 						return true;
 					}
 				}
 				return false;
 			}
+			if(result != null) result.add(actor);
 			return true;
 		}
 		

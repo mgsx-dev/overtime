@@ -5,9 +5,12 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import net.mgsx.overtime.OverTime;
@@ -26,6 +29,8 @@ public class GameScreen extends ScreenAdapter
 	private Vector2 heroPosition = new Vector2();
 	
 	private Rectangle heroRectangle = new Rectangle();
+	
+	private Array<Actor> intersectedActors = new Array<Actor>();
 	
 	public GameScreen() {
 		Skin skin = new Skin(Gdx.files.internal("skin.json"));
@@ -72,6 +77,18 @@ public class GameScreen extends ScreenAdapter
 		}else{
 			hero.setPosition((int)heroPosition.x, (int)heroPosition.y);
 			hero.setColor(Color.BLUE);
+		}
+		
+		heroRectangle.set((int)heroPosition.x + 1, (int)heroPosition.y + 1, (int)hero.getWidth() - 2, (int)hero.getHeight() - 2);
+		
+		intersectedActors.clear();
+		if(ActorIntersector.intersect(intersectedActors, clock, heroRectangle, false)){
+			for(Actor actor : intersectedActors){
+				if(actor.getTouchable() == Touchable.disabled){
+					hero.setColor(Color.ORANGE);
+					// actor.setVisible(false);
+				}
+			}
 		}
 		
 		stage.act();
