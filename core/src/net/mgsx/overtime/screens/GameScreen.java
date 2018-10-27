@@ -17,6 +17,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import net.mgsx.overtime.OverTime;
+import net.mgsx.overtime.logic.ClockControl;
+import net.mgsx.overtime.logic.GameState;
 import net.mgsx.overtime.ui.WorldGroup;
 import net.mgsx.overtime.utils.ActorIntersector;
 import net.mgsx.overtime.utils.ArrayUtils;
@@ -66,6 +68,8 @@ public class GameScreen extends ScreenAdapter
 	
 	private int nextBack;
 	
+	private ClockControl clockControl;
+	
 	public GameScreen() {
 		skin = new Skin(Gdx.files.internal("skin.json"));
 		
@@ -88,11 +92,13 @@ public class GameScreen extends ScreenAdapter
 		
 		heroPosition.set(130, 2);
 		
-		world.clock.setCurrentTime();
-		
-		world.clock.setTime(23, 59);
-		
 		world.enableBack(clockRank, false);
+		
+		clockControl = new ClockControl(world.clock);
+		clockControl.setCurrentTime();
+		
+		// XXX
+		// clockControl.setTime(23, 59);
 		// stage.setDebugAll(true);
 	}
 	
@@ -129,25 +135,37 @@ public class GameScreen extends ScreenAdapter
 	public void render(float delta) {
 		
 		// XXX DEBUG
-		if(Gdx.input.isKeyJustPressed(Input.Keys.P)){
-			genBack();
-		}
 		if(Gdx.input.isKeyJustPressed(Input.Keys.M)){
-			incClock(1, true);
+			applyInc();
 		}
 		if(Gdx.input.isKeyJustPressed(Input.Keys.L)){
-			incClock(-1, true);
+			applyDec();
 		}
 		if(Gdx.input.isKeyJustPressed(Input.Keys.K)){
-			shiftClock(-1);
+			applyShiftRight();
 		}
 		if(Gdx.input.isKeyJustPressed(Input.Keys.J)){
-			shiftClock(1);
+			applyShiftLeft();
+		}
+		if(Gdx.input.isKeyJustPressed(Input.Keys.F)){
+			applyFreeze();
+		}
+		if(Gdx.input.isKeyJustPressed(Input.Keys.R)){
+			applyRandom();
+		}
+		if(Gdx.input.isKeyJustPressed(Input.Keys.I)){
+			applySwap();
 		}
 		// XXX DEBUG
 		
 		if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
 			OverTime.i().setScreen(new MenuScreen());
+		}
+		
+		// LOGIC
+		GameState state = clockControl.update(delta);
+		if(state != GameState.TIME_RUN){
+			// TODO game over
 		}
 		
 		// TODO FREEZE bonus ?
@@ -220,30 +238,25 @@ public class GameScreen extends ScreenAdapter
 					BonusMode mode = (BonusMode) img.getUserObject();
 					switch(mode){
 					case DEC:
-						incClock(-1, true);
+						applyDec();
 						break;
 					case INC:
-						incClock(1, true);
+						applyInc();
 						break;
 					case LEFT:
-						shiftClock(1);
+						applyShiftLeft();
 						break;
 					case RIGHT:
-						shiftClock(-1);
+						applyShiftRight();
 						break;
 					case FREEZE:
-						timeout = -10;
-						frozen = true;
+						applyFreeze();
 						break;
 					case RANDOM:
-						// world.clock.randomize();
-						incClock(timeInc, 0);
-						incClock(timeInc, 1);
-						incClock(timeInc, 2);
-						incClock(timeInc, 3);
+						applyRandom();
 						break;
 					case SWAP:
-						timeInc = -timeInc;
+						applySwap();
 						break;
 					}
 					
@@ -262,25 +275,19 @@ public class GameScreen extends ScreenAdapter
 			if(timeInc > 0)
 			{
 				bgColor.set(0, .1f, .1f, 1);
-				world.clock.onColor.set(0,1f, .5f, 1f);
-				world.clock.offColor.set(0,.2f, .1f, 1f);
+				world.clock.setColor(0, 1f, .5f, 1f);
 			}else{
 				bgColor.set(.1f, 0, .1f, 1);
-				world.clock.onColor.set(1f,0, .5f , 1f);
-				world.clock.offColor.set(.2f,0, .1f, 1f);
+				world.clock.setColor(1f,0, .5f , 1f);
 			}
 		}
 		else if(timeInc > 0){
 			bgColor.set(0, .1f, 0, 1);
-			world.clock.onColor.set(0, 1f,0, 1f);
-			world.clock.offColor.set(0, .2f,0, 1f);
+			world.clock.setColor(0, 1f,0, 1f);
 		}else{
 			bgColor.set(.1f, 0, 0, 1);
-			world.clock.onColor.set(1f,0, 0 , 1f);
-			world.clock.offColor.set(.2f,0, 0, 1f);
+			world.clock.setColor(1f,0, 0 , 1f);
 		}
-		
-		world.clock.updateTime();
 		
 		Gdx.gl.glClearColor(bgColor.r, bgColor.g, bgColor.b, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -289,6 +296,38 @@ public class GameScreen extends ScreenAdapter
 		stage.draw();
 	}
 	
+	private void applySwap() {
+		timeInc = -timeInc;
+	}
+
+	private void applyRandom() {
+		// world.clock.randomize();
+		incClock(timeInc, 0);
+		incClock(timeInc, 1);
+		incClock(timeInc, 2);
+		incClock(timeInc, 3);
+	}
+
+	private void applyShiftLeft() {
+		shiftClock(1);
+	}
+	private void applyShiftRight() {
+		shiftClock(-1);
+	}
+
+	private void applyDec() {
+		incClock(-1, true);
+	}
+
+	private void applyInc() {
+		incClock(1, true);
+	}
+
+	private void applyFreeze() {
+		timeout = -10;
+		frozen = true;
+	}
+
 	private void genBack() {
 		world.randomizeBackSegs(-12, true);
 		nextBack = 10;
@@ -304,7 +343,7 @@ public class GameScreen extends ScreenAdapter
 	}
 	private void incClock(int inc, int rank){
 		int clockMul = new int[]{1, 10, 60, 600}[rank];
-		world.clock.setTime(world.clock.clockTime + clockMul * inc); 
+		clockControl.increment(clockMul * inc); 
 	}
 	private void hideBonus(Image clockBonus) 
 	{
@@ -322,10 +361,10 @@ public class GameScreen extends ScreenAdapter
 		String name;
 		switch(mode){
 		case DEC:
-			name = "inc-up";
+			name = "inc-down";
 			break;
 		case INC:
-			name = "inc-down";
+			name = "inc-up";
 			break;
 		case LEFT:
 			name = "shift-left";

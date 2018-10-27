@@ -1,6 +1,7 @@
 package net.mgsx.overtime.ui;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -29,13 +30,12 @@ public class DigitGroup extends Group{
 	
 	private Image [] segs = new Image[7];
 	private Skin skin;
-	private Color onColor, offColor;
+	private static final Color onColor = new Color(Color.WHITE);
+	private static final Color offColor = new Color(1,1,1,.2f);
 	
-	public DigitGroup(Skin skin, Color onColor, Color offColor) 
+	public DigitGroup(Skin skin) 
 	{
 		this.skin = skin;
-		this.onColor = onColor;
-		this.offColor = offColor;
 		
 		addSegH('a', 3, 14 * 2);
 		addSegH('g', 3, 14);
@@ -82,5 +82,14 @@ public class DigitGroup extends Group{
 	private void setEnabled(Actor actor, boolean enabled){
 		actor.setColor(enabled ? onColor : offColor);
 		actor.setTouchable(enabled ? Touchable.enabled : Touchable.disabled);
+	}
+	
+	@Override
+	public void draw(Batch batch, float parentAlpha) {
+		for(Actor child : getChildren()){
+			Color c = getColor();
+			child.setColor(c.r, c.g, c.b, c.a * child.getColor().a);
+		}
+		super.draw(batch, parentAlpha);
 	}
 }
