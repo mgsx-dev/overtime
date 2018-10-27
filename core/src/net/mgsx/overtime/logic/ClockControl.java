@@ -1,6 +1,6 @@
 package net.mgsx.overtime.logic;
 
-import java.util.Calendar;
+import java.util.Date;
 
 import net.mgsx.overtime.ui.ClockGroup;
 
@@ -20,9 +20,11 @@ public class ClockControl {
 	
 	public void setCurrentTime()
 	{
-		Calendar c = Calendar.getInstance();
-		int h = c.get(Calendar.HOUR_OF_DAY);
-		int m = c.get(Calendar.MINUTE);
+		Date date = new Date();
+		int h = date.getHours();
+		int m = date.getMinutes();
+		long ms = date.getTime();
+		
 		setTime(h, m);
 	}
 

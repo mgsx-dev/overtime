@@ -1,6 +1,6 @@
 package net.mgsx.overtime.ui;
 
-import java.util.Calendar;
+import java.util.Date;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -48,11 +48,13 @@ public class MiniClock extends Group
 	}
 	
 	@Override
-	public void act(float delta) {
-		Calendar c = Calendar.getInstance();
-		int h = c.get(Calendar.HOUR_OF_DAY);
-		int m = c.get(Calendar.MINUTE);
-		int ms = c.get(Calendar.MILLISECOND);
+	public void act(float delta) 
+	{
+		Date date = new Date();
+		
+		int h = date.getHours();
+		int m = date.getMinutes();
+		long ms = date.getTime();
 		
 		setValue(imgClock1, h/10);
 		setValue(imgClock2, h%10);

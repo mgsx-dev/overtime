@@ -11,10 +11,10 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import net.mgsx.overtime.OverTime;
 import net.mgsx.overtime.ui.MiniClock;
+import net.mgsx.overtime.utils.PixelPerfectViewport;
 
 public class MenuScreen extends ScreenAdapter
 {
@@ -28,9 +28,9 @@ public class MenuScreen extends ScreenAdapter
 	private Image title;
 	
 	public MenuScreen() {
-		skin = new Skin(Gdx.files.internal("skin.json"));
+		skin = OverTime.i().skin;
 		
-		stage = new Stage(new FitViewport(OverTime.WORLD_WIDTH, OverTime.WORLD_HEIGHT));
+		stage = new Stage(new PixelPerfectViewport(OverTime.WORLD_WIDTH, OverTime.WORLD_HEIGHT));
 		
 		stage.addActor(new Image(skin, "back-purple"));
 		
@@ -87,15 +87,15 @@ public class MenuScreen extends ScreenAdapter
 	@Override
 	public void render(float delta) {
 		
-		if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
-			start();
-		}
-		
 		Gdx.gl.glClearColor(bgColor.r, bgColor.g, bgColor.b, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		stage.act();
 		stage.draw();
+		
+		if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+			start();
+		}
 	}
 	
 	private void start() {
@@ -106,5 +106,11 @@ public class MenuScreen extends ScreenAdapter
 	@Override
 	public void resize(int width, int height) {
 		stage.getViewport().update(width, height);
+	}
+	
+	@Override
+	public void dispose() {
+		stage.dispose();
+		super.dispose();
 	}
 }

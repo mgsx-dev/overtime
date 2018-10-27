@@ -2,6 +2,8 @@ package net.mgsx.overtime;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import net.mgsx.overtime.screens.MenuScreen;
 
@@ -15,10 +17,24 @@ public class OverTime extends Game {
 	public static OverTime i(){
 		return (OverTime) Gdx.app.getApplicationListener();
 	}
+	public Skin skin;
+	
 	@Override
-	public void create () {
+	public void create () 
+	{
+		skin = new Skin(Gdx.files.internal("skin.json"));
 		// setScreen(new GameScreen());
 		setScreen(new MenuScreen());
+	}
+	
+	@Override
+	public void setScreen(Screen screen)
+	{
+		Screen previous = this.screen;
+		super.setScreen(screen);
+		if(previous != null){
+			previous.dispose();
+		}
 	}
 	
 }

@@ -15,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import net.mgsx.overtime.OverTime;
 import net.mgsx.overtime.logic.ClockControl;
@@ -24,6 +23,7 @@ import net.mgsx.overtime.ui.MicroClock;
 import net.mgsx.overtime.ui.WorldGroup;
 import net.mgsx.overtime.utils.ActorIntersector;
 import net.mgsx.overtime.utils.ArrayUtils;
+import net.mgsx.overtime.utils.PixelPerfectViewport;
 import net.mgsx.overtime.utils.UniControl;
 
 public class GameScreen extends ScreenAdapter
@@ -81,9 +81,9 @@ public class GameScreen extends ScreenAdapter
 	private MicroClock miniclock;
 	
 	public GameScreen() {
-		skin = new Skin(Gdx.files.internal("skin.json"));
+		skin = OverTime.i().skin;
 		
-		stage = new Stage(new FitViewport(OverTime.WORLD_WIDTH, OverTime.WORLD_HEIGHT));
+		stage = new Stage(new PixelPerfectViewport(OverTime.WORLD_WIDTH, OverTime.WORLD_HEIGHT));
 		
 		// stage.addActor(new Image(skin, "back-purple"));
 		
@@ -176,10 +176,6 @@ public class GameScreen extends ScreenAdapter
 			}
 		}
 		
-		if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
-			OverTime.i().setScreen(new MenuScreen());
-		}
-		
 		if(state == GameState.TIME_RUN){
 			updateLogic(delta);
 		}else{
@@ -227,6 +223,11 @@ public class GameScreen extends ScreenAdapter
 
 		stage.act();
 		stage.draw();
+		
+		
+		if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+			OverTime.i().setScreen(new MenuScreen());
+		}
 	}
 	
 	private void updateLogic(float delta)
@@ -484,5 +485,11 @@ public class GameScreen extends ScreenAdapter
 	@Override
 	public void resize(int width, int height) {
 		stage.getViewport().update(width, height);
+	}
+	
+	@Override
+	public void dispose() {
+		stage.dispose();
+		super.dispose();
 	}
 }
