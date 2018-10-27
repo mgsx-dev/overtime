@@ -37,16 +37,18 @@ public class ClockControl {
 	
 	public void increment(int inc)
 	{
-		itime += inc;
-		if(inc < 0 && itime == 0){
-			state = GameState.TIME_ZERO;
+		if(state == GameState.TIME_RUN){
+			itime += inc;
+			if(inc < 0 && itime == 0){
+				state = GameState.TIME_ZERO;
+			}
+			else if(itime == MAX_TIME){
+				state = GameState.TIME_TWENTY_FOUR;
+			}else{
+				itime = ((itime % MAX_TIME) + MAX_TIME) % MAX_TIME;
+			}
+			apply();
 		}
-		else if(itime == MAX_TIME){
-			state = GameState.TIME_TWENTY_FOUR;
-		}else{
-			itime = ((itime % MAX_TIME) + MAX_TIME) % MAX_TIME;
-		}
-		apply();
 	}
 	
 	private void apply()

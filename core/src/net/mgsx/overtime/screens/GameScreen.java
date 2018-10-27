@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -68,7 +69,11 @@ public class GameScreen extends ScreenAdapter
 	
 	private int nextBack;
 	
+	private Image endImage;
+	
 	private ClockControl clockControl;
+
+	private GameState state = GameState.TIME_RUN;
 	
 	public GameScreen() {
 		skin = new Skin(Gdx.files.internal("skin.json"));
@@ -98,7 +103,7 @@ public class GameScreen extends ScreenAdapter
 		clockControl.setCurrentTime();
 		
 		// XXX
-		// clockControl.setTime(23, 59);
+		// clockControl.setTime(23, 55);
 		// stage.setDebugAll(true);
 	}
 	
@@ -162,11 +167,59 @@ public class GameScreen extends ScreenAdapter
 			OverTime.i().setScreen(new MenuScreen());
 		}
 		
-		// LOGIC
-		GameState state = clockControl.update(delta);
-		if(state != GameState.TIME_RUN){
-			// TODO game over
+		if(state == GameState.TIME_RUN){
+			updateLogic(delta);
+		}else{
+			if(endImage == null){
+				switch(state){
+				case TIME_DEATH:
+					endImage = new Image(skin, "end-death");
+					break;
+				case TIME_TWENTY_FOUR:
+					endImage = new Image(skin, "end-overtime");
+					break;
+				case TIME_ZERO:
+					endImage = new Image(skin, "end-timeout");
+					break;
+				}
+				Image bg = new Image(skin, "white");
+				if(state == GameState.TIME_TWENTY_FOUR){
+					bg.setColor(0f, .3f, 0f, 1f);
+				}else{
+					bg.setColor(.3f, .0f, 0f, 1f);
+				}
+				stage.addActor(bg);
+				bg.getColor().a = 0;
+				bg.addAction(Actions.sequence(Actions.delay(1f), Actions.alpha(1f, 3f), Actions.color(Color.BLACK, 1f)));
+				bg.setSize(stage.getWidth(), stage.getHeight());
+				
+				stage.addActor(endImage);
+				endImage.setPosition(stage.getWidth()/2, stage.getHeight()/2, Align.center);
+				endImage.getColor().a = 0;
+				endImage.addAction(Actions.sequence(
+						Actions.delay(3f),
+						Actions.alpha(1f, 3f),
+						Actions.delay(2f),
+						Actions.run(new Runnable() {
+							@Override
+							public void run() {
+								OverTime.i().setScreen(new MenuScreen());
+							}
+						})));
+			}
 		}
+		
+		Gdx.gl.glClearColor(bgColor.r, bgColor.g, bgColor.b, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		stage.act();
+		stage.draw();
+	}
+	
+	private void updateLogic(float delta)
+	{
+		state = clockControl.update(delta);
+		if(state != GameState.TIME_RUN) return;
 		
 		// TODO FREEZE bonus ?
 		timeout += delta;
@@ -206,8 +259,7 @@ public class GameScreen extends ScreenAdapter
 		
 		if(ActorIntersector.intersect(world, heroRectangle)){
 			if(!moving){
-				// System.out.println("stuck");
-				// TODO game over !
+				state = GameState.TIME_DEATH;
 			}
 			heroPosition.set(hero.getX(), hero.getY());
 			hero.setColor(Color.RED);
@@ -288,12 +340,6 @@ public class GameScreen extends ScreenAdapter
 			bgColor.set(.1f, 0, 0, 1);
 			world.clock.setColor(1f,0, 0 , 1f);
 		}
-		
-		Gdx.gl.glClearColor(bgColor.r, bgColor.g, bgColor.b, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-		stage.act();
-		stage.draw();
 	}
 	
 	private void applySwap() {

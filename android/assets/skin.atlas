@@ -6,127 +6,155 @@ filter: Nearest,Nearest
 repeat: none
 clocks-freeze
   rotate: false
-  xy: 9, 13
+  xy: 149, 90
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 clocks-inc-down
   rotate: false
-  xy: 149, 96
+  xy: 102, 29
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 clocks-inc-up
   rotate: false
-  xy: 9, 4
+  xy: 67, 18
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 clocks-random
   rotate: false
-  xy: 18, 13
+  xy: 149, 81
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 clocks-shift-left
   rotate: false
-  xy: 149, 87
+  xy: 158, 90
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 clocks-shift-right
   rotate: false
-  xy: 18, 4
+  xy: 76, 18
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 clocks-swap
   rotate: false
-  xy: 149, 78
+  xy: 149, 72
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 dot
   rotate: false
-  xy: 87, 34
+  xy: 250, 122
   size: 4, 4
   orig: 4, 4
   offset: 0, 0
   index: -1
+end-death
+  rotate: false
+  xy: 2, 27
+  size: 98, 16
+  orig: 98, 16
+  offset: 0, 0
+  index: -1
+end-overtime
+  rotate: false
+  xy: 142, 110
+  size: 65, 16
+  orig: 65, 16
+  offset: 0, 0
+  index: -1
+end-timeout
+  rotate: false
+  xy: 2, 9
+  size: 56, 16
+  orig: 56, 16
+  offset: 0, 0
+  index: -1
 mini-digits
   rotate: false
-  xy: 2, 29
+  xy: 142, 99
   size: 63, 9
   orig: 63, 9
   offset: 0, 0
   index: -1
 segment-extra-bottom
   rotate: false
-  xy: 2, 2
+  xy: 142, 72
   size: 5, 25
   orig: 5, 25
   offset: 0, 0
   index: -1
 segment-extra-left
   rotate: false
-  xy: 183, 116
+  xy: 22, 2
   size: 17, 5
   orig: 17, 5
   offset: 0, 0
   index: -1
 segment-extra-right
   rotate: false
-  xy: 9, 22
+  xy: 41, 2
   size: 17, 5
   orig: 17, 5
   offset: 0, 0
   index: -1
 segment-extra-top
   rotate: false
-  xy: 142, 85
+  xy: 142, 45
   size: 5, 25
   orig: 5, 25
   offset: 0, 0
   index: -1
 segment-h
   rotate: false
-  xy: 149, 105
+  xy: 102, 38
   size: 15, 5
   orig: 15, 5
   offset: 0, 0
   index: -1
 segment-middle-h
   rotate: false
-  xy: 67, 33
+  xy: 2, 2
   size: 18, 5
   orig: 18, 5
   offset: 0, 0
   index: -1
 segment-v
   rotate: false
-  xy: 142, 72
+  xy: 60, 14
   size: 5, 11
   orig: 5, 11
   offset: 0, 0
   index: -1
 start
   rotate: false
-  xy: 142, 112
+  xy: 209, 117
   size: 39, 9
   orig: 39, 9
   offset: 0, 0
   index: -1
 title
   rotate: false
-  xy: 2, 40
+  xy: 2, 45
   size: 138, 81
   orig: 138, 81
+  offset: 0, 0
+  index: -1
+white
+  rotate: false
+  xy: 209, 114
+  size: 1, 1
+  orig: 1, 1
   offset: 0, 0
   index: -1
