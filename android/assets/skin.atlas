@@ -1,61 +1,68 @@
 
 skin.png
-size: 256,128
+size: 512,128
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+back-purple
+  rotate: false
+  xy: 2, 45
+  size: 138, 81
+  orig: 138, 81
+  offset: 0, 0
+  index: -1
 clocks-freeze
   rotate: false
-  xy: 142, 52
+  xy: 167, 36
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 clocks-inc-down
   rotate: false
-  xy: 156, 79
+  xy: 372, 119
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 clocks-inc-up
   rotate: false
-  xy: 102, 29
+  xy: 60, 11
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 clocks-random
   rotate: false
-  xy: 67, 18
+  xy: 60, 2
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 clocks-shift-left
   rotate: false
-  xy: 156, 70
+  xy: 296, 90
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 clocks-shift-right
   rotate: false
-  xy: 165, 79
+  xy: 176, 36
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 clocks-swap
   rotate: false
-  xy: 76, 18
+  xy: 381, 119
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 dot
   rotate: false
-  xy: 250, 122
+  xy: 102, 28
   size: 4, 4
   orig: 4, 4
   offset: 0, 0
@@ -69,7 +76,7 @@ end-death
   index: -1
 end-overtime
   rotate: false
-  xy: 142, 110
+  xy: 282, 110
   size: 65, 16
   orig: 65, 16
   offset: 0, 0
@@ -83,21 +90,21 @@ end-timeout
   index: -1
 micro-digits
   rotate: false
-  xy: 142, 99
+  xy: 102, 34
   size: 63, 9
   orig: 63, 9
   offset: 0, 0
   index: -1
 mini-digits
   rotate: false
-  xy: 142, 88
+  xy: 282, 99
   size: 63, 9
   orig: 63, 9
   offset: 0, 0
   index: -1
 segment-extra-bottom
   rotate: false
-  xy: 142, 61
+  xy: 282, 72
   size: 5, 25
   orig: 5, 25
   offset: 0, 0
@@ -118,14 +125,14 @@ segment-extra-right
   index: -1
 segment-extra-top
   rotate: false
-  xy: 149, 61
+  xy: 282, 45
   size: 5, 25
   orig: 5, 25
   offset: 0, 0
   index: -1
 segment-h
   rotate: false
-  xy: 102, 38
+  xy: 60, 20
   size: 15, 5
   orig: 15, 5
   offset: 0, 0
@@ -139,28 +146,28 @@ segment-middle-h
   index: -1
 segment-v
   rotate: false
-  xy: 60, 14
+  xy: 289, 86
   size: 5, 11
   orig: 5, 11
   offset: 0, 0
   index: -1
 start
   rotate: false
-  xy: 209, 117
-  size: 39, 9
-  orig: 39, 9
+  xy: 349, 117
+  size: 21, 9
+  orig: 21, 9
   offset: 0, 0
   index: -1
 title
   rotate: false
-  xy: 2, 45
+  xy: 142, 45
   size: 138, 81
   orig: 138, 81
   offset: 0, 0
   index: -1
 white
   rotate: false
-  xy: 209, 114
+  xy: 349, 114
   size: 1, 1
   orig: 1, 1
   offset: 0, 0

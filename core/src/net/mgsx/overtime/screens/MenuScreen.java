@@ -24,19 +24,42 @@ public class MenuScreen extends ScreenAdapter
 	private Skin skin;
 
 	private MiniClock miniClock;
+
+	private Image title;
 	
 	public MenuScreen() {
 		skin = new Skin(Gdx.files.internal("skin.json"));
 		
 		stage = new Stage(new FitViewport(OverTime.WORLD_WIDTH, OverTime.WORLD_HEIGHT));
 		
-		stage.addActor(new Image(skin, "title"));
+		stage.addActor(new Image(skin, "back-purple"));
+		
+		stage.addActor(title = new Image(skin, "title"));
+		
+		title.getColor().a = 0;
+		title.addAction(Actions.sequence(
+				Actions.delay(.5f),
+				Actions.repeat(4, Actions.sequence(
+						Actions.alpha(1f, .05f),
+						Actions.alpha(.5f, .05f)
+						)),
+				Actions.alpha(0f),
+				Actions.alpha(1f, .2f),
+				Actions.forever(
+						Actions.sequence(
+								Actions.delay(10f),
+								Actions.repeat(3, Actions.sequence(
+										Actions.alpha(1f, .05f),
+										Actions.alpha(.5f, .05f)
+										)),
+				Actions.alpha(1f, .2f))
+				)));
 		
 		Image bt = new Image(skin, "start");
 		stage.addActor(bt);
 		
 		stage.addActor(miniClock = new MiniClock(skin));
-		miniClock.setPosition(42, 20);
+		miniClock.setPosition(43, 11);
 		
 		bt.addListener(new ClickListener(){
 			@Override
@@ -48,7 +71,7 @@ public class MenuScreen extends ScreenAdapter
 		
 		bt.addAction(Actions.forever(Actions.sequence(Actions.alpha(.3f, .9f), Actions.alpha(1f, .1f))));
 		
-		bt.setPosition(71, 13);
+		bt.setPosition(70, 11);
 	}
 	
 	@Override

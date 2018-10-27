@@ -85,6 +85,8 @@ public class GameScreen extends ScreenAdapter
 		
 		stage = new Stage(new FitViewport(OverTime.WORLD_WIDTH, OverTime.WORLD_HEIGHT));
 		
+		// stage.addActor(new Image(skin, "back-purple"));
+		
 		hero = new Image(skin, "dot");
 		hero.setColor(Color.RED);
 		
