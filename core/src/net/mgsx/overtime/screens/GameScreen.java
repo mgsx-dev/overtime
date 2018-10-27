@@ -78,6 +78,8 @@ public class GameScreen extends ScreenAdapter
 	
 	private int heroBlink;
 	
+	private boolean gameOver;
+	
 	private MicroClock miniclock;
 	
 	public GameScreen() {
@@ -212,7 +214,7 @@ public class GameScreen extends ScreenAdapter
 						Actions.run(new Runnable() {
 							@Override
 							public void run() {
-								OverTime.i().setScreen(new MenuScreen());
+								gameOver = true;
 							}
 						})));
 			}
@@ -225,7 +227,7 @@ public class GameScreen extends ScreenAdapter
 		stage.draw();
 		
 		
-		if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+		if(gameOver || Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
 			OverTime.i().setScreen(new MenuScreen());
 		}
 	}
