@@ -35,6 +35,20 @@ public class ClockControl {
 		apply();
 	}
 	
+	public void increment(int inc, int rank)
+	{
+		int mul = new int[]{1, 10, 60, 600}[rank];
+		int toAdd = mul * inc;
+		if(rank == 3){
+			int h1 = itime / 600;
+			if(inc > 0 && h1 == 2){
+				toAdd = 240;
+			}else if(inc < 0 && h1 == 0){
+				toAdd = -240;
+			}
+		}
+		increment(toAdd);
+	}
 	public void increment(int inc)
 	{
 		if(state == GameState.TIME_RUN){

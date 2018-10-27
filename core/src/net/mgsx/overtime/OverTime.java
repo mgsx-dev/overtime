@@ -7,6 +7,8 @@ import net.mgsx.overtime.screens.MenuScreen;
 
 public class OverTime extends Game {
 	
+	public static final boolean DEBUG = true;
+	
 	public static final int WORLD_WIDTH = 138;
 	public static final int WORLD_HEIGHT= 81;
 

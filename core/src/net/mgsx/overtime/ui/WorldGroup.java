@@ -1,6 +1,5 @@
 package net.mgsx.overtime.ui;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -11,14 +10,10 @@ import com.badlogic.gdx.utils.Array;
 
 public class WorldGroup extends Group{
 	
-	Color offColor = new Color(0x1f1f1fff);
-	Color onColor = Color.DARK_GRAY;
-
 	private Skin skin;
 	public ClockGroup clock;
 	public Group backGroup;
 	private Array<Image> backItems = new Array<Image>();
-	private int backSwitch;
 	
 	public WorldGroup(Skin skin) {
 		this.skin = skin;
@@ -104,26 +99,33 @@ public class WorldGroup extends Group{
 
 	private void enableBackSeg(Image actor, boolean enabled, boolean smooth) 
 	{
+		float alphaOn = .5f;
+		float alphaOff = .05f;
 		if(smooth){
 			if(enabled != isBackSegEnable(actor))
 			{
 				actor.setUserObject(enabled);
 				actor.clearActions();
 				if(enabled){
+					// actor.setColor(onColor);
 					actor.addAction(Actions.sequence(
-							Actions.color(onColor, 1f, Interpolation.swingIn),
+							Actions.repeat(4, Actions.sequence(
+									Actions.alpha(1f, .05f),
+									Actions.alpha(alphaOn, .05f)
+									)),
 							Actions.touchable(Touchable.enabled)
 							));
 				}else{
 					actor.addAction(Actions.sequence(
 							Actions.touchable(Touchable.disabled),
-							Actions.color(offColor, 1f, Interpolation.bounceOut)
+							Actions.alpha(alphaOff, .2f, Interpolation.linear)
 							));
 				}
 			}
 		}else{
 			actor.setUserObject(enabled);
-			actor.setColor(enabled ? onColor : offColor);
+			// actor.setColor(enabled ? onColor : offColor);
+			actor.getColor().a = enabled ? alphaOn : alphaOff;
 			actor.setTouchable(enabled ? Touchable.enabled : Touchable.disabled);
 		}
 	}

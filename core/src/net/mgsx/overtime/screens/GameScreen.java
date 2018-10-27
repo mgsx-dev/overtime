@@ -75,6 +75,8 @@ public class GameScreen extends ScreenAdapter
 
 	private GameState state = GameState.TIME_RUN;
 	
+	private int heroBlink;
+	
 	public GameScreen() {
 		skin = new Skin(Gdx.files.internal("skin.json"));
 		
@@ -139,29 +141,29 @@ public class GameScreen extends ScreenAdapter
 	@Override
 	public void render(float delta) {
 		
-		// XXX DEBUG
-		if(Gdx.input.isKeyJustPressed(Input.Keys.M)){
-			applyInc();
+		if(OverTime.DEBUG){
+			if(Gdx.input.isKeyJustPressed(Input.Keys.M)){
+				applyInc();
+			}
+			if(Gdx.input.isKeyJustPressed(Input.Keys.L)){
+				applyDec();
+			}
+			if(Gdx.input.isKeyJustPressed(Input.Keys.K)){
+				applyShiftRight();
+			}
+			if(Gdx.input.isKeyJustPressed(Input.Keys.J)){
+				applyShiftLeft();
+			}
+			if(Gdx.input.isKeyJustPressed(Input.Keys.F)){
+				applyFreeze();
+			}
+			if(Gdx.input.isKeyJustPressed(Input.Keys.R)){
+				applyRandom();
+			}
+			if(Gdx.input.isKeyJustPressed(Input.Keys.I)){
+				applySwap();
+			}
 		}
-		if(Gdx.input.isKeyJustPressed(Input.Keys.L)){
-			applyDec();
-		}
-		if(Gdx.input.isKeyJustPressed(Input.Keys.K)){
-			applyShiftRight();
-		}
-		if(Gdx.input.isKeyJustPressed(Input.Keys.J)){
-			applyShiftLeft();
-		}
-		if(Gdx.input.isKeyJustPressed(Input.Keys.F)){
-			applyFreeze();
-		}
-		if(Gdx.input.isKeyJustPressed(Input.Keys.R)){
-			applyRandom();
-		}
-		if(Gdx.input.isKeyJustPressed(Input.Keys.I)){
-			applySwap();
-		}
-		// XXX DEBUG
 		
 		if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
 			OverTime.i().setScreen(new MenuScreen());
@@ -232,7 +234,7 @@ public class GameScreen extends ScreenAdapter
 				genBack();
 			}
 			
-			incClock(timeInc, false);
+			incClock(timeInc, false, false);
 		}
 		
 		float speed = 30f;
@@ -254,6 +256,9 @@ public class GameScreen extends ScreenAdapter
 			moving = true;
 		}
 		
+		// clamp to screen
+		ActorIntersector.clampToStage(heroPosition, hero);
+		
 		// clamp hero
 		heroRectangle.set((int)heroPosition.x + 1, (int)heroPosition.y + 1, (int)hero.getWidth() - 2, (int)hero.getHeight() - 2);
 		
@@ -262,23 +267,24 @@ public class GameScreen extends ScreenAdapter
 				state = GameState.TIME_DEATH;
 			}
 			heroPosition.set(hero.getX(), hero.getY());
-			hero.setColor(Color.RED);
+			//hero.setColor(timeInc > 0 ? Color.RED : Color.GREEN);
 		}else{
 			hero.setPosition((int)heroPosition.x, (int)heroPosition.y);
-			hero.setColor(Color.BLUE);
 		}
+		hero.setColor(timeInc > 0 ? Color.RED : Color.GREEN);
 		
 		
 		// check some soft collisions
 		heroRectangle.set((int)heroPosition.x + 1, (int)heroPosition.y + 1, (int)hero.getWidth() - 2, (int)hero.getHeight() - 2);
 		
 		intersectedActors.clear();
-		if(ActorIntersector.intersect(intersectedActors, world, heroRectangle, false)){
+		if(ActorIntersector.intersect(intersectedActors, world.clock, heroRectangle, false)){
 			for(Actor actor : intersectedActors){
 				if(actor.getTouchable() == Touchable.disabled || true){
-					hero.setColor(Color.ORANGE);
-					// actor.setColor(Color.ORANGE);
-					// actor.setVisible(false);
+					heroBlink++;
+					if((heroBlink / 4) % 2 == 0){
+						hero.setColor(timeInc > 0 ? Color.ORANGE : Color.PURPLE);
+					}
 				}
 			}
 		}
@@ -348,10 +354,10 @@ public class GameScreen extends ScreenAdapter
 
 	private void applyRandom() {
 		// world.clock.randomize();
-		incClock(timeInc, 0);
-		incClock(timeInc, 1);
-		incClock(timeInc, 2);
-		incClock(timeInc, 3);
+		incClock(timeInc, 0, true);
+		incClock(timeInc, 1, true);
+		incClock(timeInc, 2, true);
+		incClock(timeInc, 3, true);
 	}
 
 	private void applyShiftLeft() {
@@ -362,11 +368,11 @@ public class GameScreen extends ScreenAdapter
 	}
 
 	private void applyDec() {
-		incClock(-1, true);
+		incClock(-1, true, true);
 	}
 
 	private void applyInc() {
-		incClock(1, true);
+		incClock(1, true, true);
 	}
 
 	private void applyFreeze() {
@@ -384,12 +390,13 @@ public class GameScreen extends ScreenAdapter
 		world.enableBack(clockRank, true);
 	}
 	
-	private void incClock(int inc, boolean atLeft){
-		incClock(inc, atLeft ? (clockRank+1)%4 : clockRank);
+	private void incClock(int inc, boolean atLeft, boolean blink){
+		incClock(inc, atLeft ? (clockRank+1)%4 : clockRank, blink);
+		
 	}
-	private void incClock(int inc, int rank){
-		int clockMul = new int[]{1, 10, 60, 600}[rank];
-		clockControl.increment(clockMul * inc); 
+	private void incClock(int inc, int rank, boolean blink){
+		if(blink) world.clock.blinkDigit(rank);
+		clockControl.increment(inc, rank); 
 	}
 	private void hideBonus(Image clockBonus) 
 	{

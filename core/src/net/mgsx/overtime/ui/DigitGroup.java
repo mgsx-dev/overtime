@@ -88,7 +88,7 @@ public class DigitGroup extends Group{
 	public void draw(Batch batch, float parentAlpha) {
 		for(Actor child : getChildren()){
 			Color c = getColor();
-			child.setColor(c.r, c.g, c.b, c.a * child.getColor().a);
+			child.setColor(c.r, c.g, c.b, child.getColor().a);
 		}
 		super.draw(batch, parentAlpha);
 	}

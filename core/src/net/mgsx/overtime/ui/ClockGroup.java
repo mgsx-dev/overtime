@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
@@ -67,11 +68,18 @@ public class ClockGroup extends Group
 	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
+		Color c = getColor();
 		for(Actor child : getChildren()){
-			Color c = getColor();
-			child.setColor(c.r, c.g, c.b, c.a * child.getColor().a);
+			child.setColor(c.r, c.g, c.b, child.getColor().a);
 		}
 		super.draw(batch, parentAlpha);
+	}
+
+	public void blinkDigit(int rank) {
+		digits[digits.length - rank-1].addAction(Actions.repeat(4, Actions.sequence(
+				Actions.alpha(0.2f, .05f),
+				Actions.alpha(1f, .05f)
+				)));
 	}
 	
 }
