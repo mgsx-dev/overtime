@@ -21,9 +21,20 @@ eclipse.project {
     name = appName + "-assets"
 }
 
+task buildAssets(group: 'gdx'){}
+
+def prePackTasks = []
+
+prePackTasks << gdxRawCopy("src/skin", "$buildDir/unpacked")
+
+def packTask = gdxAtlasPack("$buildDir/unpacked", "../android/assets/skin")
+
+packTask.dependsOn += prePackTasks
+
+buildAssets.dependsOn << packTask
+
 /** usage example :
 
-task buildAssets(group: 'gdx'){}
 
 // TILED :
 buildAssets.dependsOn << tiledMapPacker("src/maps", "$projectDir/../android/assets/maps")
