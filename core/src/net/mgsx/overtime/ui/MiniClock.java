@@ -54,7 +54,7 @@ public class MiniClock extends Group
 		
 		int h = date.getHours();
 		int m = date.getMinutes();
-		long ms = date.getTime();
+		long ms = date.getTime() % 1000;
 		
 		setValue(imgClock1, h/10);
 		setValue(imgClock2, h%10);

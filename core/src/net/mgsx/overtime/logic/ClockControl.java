@@ -23,7 +23,6 @@ public class ClockControl {
 		Date date = new Date();
 		int h = date.getHours();
 		int m = date.getMinutes();
-		long ms = date.getTime();
 		
 		setTime(h, m);
 	}
