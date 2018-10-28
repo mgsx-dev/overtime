@@ -8,10 +8,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 
+import net.mgsx.overtime.audio.AudioEngine;
+
 public class MicroClock extends Group
 {
 	private Array<Drawable> digits = new Array<Drawable>();
 	private Array<Image> imgClocks = new Array<Image>();
+	private int value = -1;
 	
 	public MicroClock(Skin skin, int nDigits) {
 		TextureRegion region = skin.getRegion("micro-digits");
@@ -40,11 +43,15 @@ public class MicroClock extends Group
 
 	public void setTime(int time) 
 	{
-		int value = time;
-		for(int i=0 ; i<imgClocks.size ; i++){
-			Image img = imgClocks.get(imgClocks.size-i-1);
-			setValue(img, value%10);
-			value/=10;
+		if(this.value != time){
+			this.value = time;
+			AudioEngine.i().sfxMicroClock();
+			int value = this.value;
+			for(int i=0 ; i<imgClocks.size ; i++){
+				Image img = imgClocks.get(imgClocks.size-i-1);
+				setValue(img, value%10);
+				value/=10;
+			}
 		}
 	}
 }

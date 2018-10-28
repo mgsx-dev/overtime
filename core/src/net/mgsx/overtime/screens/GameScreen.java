@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
 import net.mgsx.overtime.OverTime;
+import net.mgsx.overtime.audio.AudioEngine;
 import net.mgsx.overtime.logic.ClockControl;
 import net.mgsx.overtime.logic.GameState;
 import net.mgsx.overtime.ui.MicroClock;
@@ -127,6 +128,8 @@ public class GameScreen extends ScreenAdapter
 		// XXX
 		// clockControl.setTime(23, 55);
 		// stage.setDebugAll(true);
+		
+		AudioEngine.i().menuToGame();
 	}
 	
 	@Override
@@ -283,6 +286,8 @@ public class GameScreen extends ScreenAdapter
 			}
 			
 			incClock(timeInc, false, false);
+			
+			AudioEngine.i().sfxClock();
 		}
 		
 		if(timeout < 0){
@@ -317,6 +322,7 @@ public class GameScreen extends ScreenAdapter
 		if(ActorIntersector.intersect(world, heroRectangle)){
 			if(!moving){
 				state = GameState.TIME_DEATH;
+				AudioEngine.i().sfxCrush();
 			}
 			heroPosition.set(hero.getX(), hero.getY());
 			//hero.setColor(timeInc > 0 ? Color.RED : Color.GREEN);
@@ -402,6 +408,10 @@ public class GameScreen extends ScreenAdapter
 	
 	private void applySwap() {
 		timeInc = -timeInc;
+		if(timeInc > 0)
+			AudioEngine.i().sfxSwapUp();
+		else
+			AudioEngine.i().sfxSwapDown();
 	}
 
 	private void applyRandom() {
@@ -414,22 +424,28 @@ public class GameScreen extends ScreenAdapter
 
 	private void applyShiftLeft() {
 		shiftClock(1);
+		AudioEngine.i().sfxShift();
 	}
 	private void applyShiftRight() {
 		shiftClock(-1);
+		AudioEngine.i().sfxShift();
 	}
 
 	private void applyDec() {
 		incClock(-1, true, true);
+		AudioEngine.i().sfxInc();
 	}
 
 	private void applyInc() {
 		incClock(1, true, true);
+		AudioEngine.i().sfxInc();
 	}
 
 	private void applyFreeze() {
 		timeout = -10;
 		frozen = true;
+		
+		AudioEngine.i().sfxFreeze();
 		
 		miniclock.clearActions();
 		miniclock.addAction(

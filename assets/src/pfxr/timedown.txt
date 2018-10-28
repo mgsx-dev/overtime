@@ -1,0 +1,14 @@
+pitch-slide -7.27559;
+vibrato-depth 0;
+pitch-jump-range 12.2835;
+pitch-jump-speed 15.1683;
+bit-crush 0;
+bit-sweep 0.0787402;
+vibrato-speed 13.2382;
+tremolo-depth 0;
+tremolo-speed 9.36457;
+decay-time 338.189;
+sustain-time 125.984;
+frequency 88.9764;
+type 3;
+attack-time 23.622;

@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import net.mgsx.overtime.OverTime;
+import net.mgsx.overtime.audio.AudioEngine;
 import net.mgsx.overtime.ui.MiniClock;
 import net.mgsx.overtime.utils.PixelPerfectViewport;
 
@@ -57,6 +58,8 @@ public class MenuScreen extends ScreenAdapter
 		bt.addAction(Actions.forever(Actions.sequence(Actions.alpha(.3f, .9f), Actions.alpha(1f, .1f))));
 		
 		bt.setPosition(70, 11);
+		
+		AudioEngine.i().gameToMenu();
 	}
 	
 	@Override
@@ -66,6 +69,8 @@ public class MenuScreen extends ScreenAdapter
 		
 		title.addAction(Actions.sequence(
 				Actions.delay(.5f),
+				AudioEngine.i().sfxBigGlitchAsAction(), 
+				AudioEngine.i().sfxSmallGlitchAsAction(),
 				Actions.repeat(4, Actions.sequence(
 						Actions.alpha(1f, .05f),
 						Actions.alpha(.5f, .05f)
@@ -74,13 +79,15 @@ public class MenuScreen extends ScreenAdapter
 				Actions.alpha(1f, .2f),
 				Actions.forever(
 						Actions.sequence(
-								Actions.delay(10f),
+								Actions.delay(5f),
+								AudioEngine.i().sfxSmallGlitchAsAction(),
 								Actions.repeat(3, Actions.sequence(
 										Actions.alpha(1f, .05f),
 										Actions.alpha(.5f, .05f)
 										)),
 				Actions.alpha(1f, .2f))
 				)));
+		AudioEngine.i().menuBegin();
 	}
 	
 	@Override

@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
+import net.mgsx.overtime.audio.AudioEngine;
 import net.mgsx.overtime.gfx.GFXDissolve;
 import net.mgsx.overtime.screens.MenuScreen;
 
@@ -25,7 +26,7 @@ public class OverTime extends Game {
 	private Screen screenA, screenB;
 	
 	private float gfxTime;
-	
+
 	@Override
 	public void create () 
 	{
@@ -52,6 +53,8 @@ public class OverTime extends Game {
 			screenA = this.screen;
 			screenB = screen;
 			screenB.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			
+			// AudioEngine.i().setDroneTarget(.1f);
 		}
 	}
 	
@@ -60,6 +63,8 @@ public class OverTime extends Game {
 		super.render();
 		float delta = Math.min(1f / 15f, Gdx.graphics.getDeltaTime());
 		float speed = 1f;
+		
+		AudioEngine.i().update(delta);
 		
 		// diseapear sequence
 		if(screenA != null){
