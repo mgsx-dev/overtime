@@ -82,6 +82,8 @@ public class GameScreen extends ScreenAdapter
 	
 	private MicroClock miniclock;
 	
+	private boolean paused = true;
+	
 	public GameScreen() {
 		skin = OverTime.i().skin;
 		
@@ -117,9 +119,27 @@ public class GameScreen extends ScreenAdapter
 		miniclock.setPosition(66, 1);
 		miniclock.getColor().a = 0;
 		
+		hero.setVisible(false);
+		
+		bgColor.set(0, .1f, 0, 1);
+		world.clock.setColor(0, 1f,0, 1f);
+		
 		// XXX
 		// clockControl.setTime(23, 55);
 		// stage.setDebugAll(true);
+	}
+	
+	@Override
+	public void show() {
+		paused = false;
+		hero.setVisible(true);
+		super.show();
+	}
+	
+	@Override
+	public void hide() {
+		paused = true;
+		super.hide();
 	}
 	
 	private void spwanBonus(int num) {
@@ -154,69 +174,75 @@ public class GameScreen extends ScreenAdapter
 	@Override
 	public void render(float delta) {
 		
-		if(OverTime.DEBUG){
-			if(Gdx.input.isKeyJustPressed(Input.Keys.M)){
-				applyInc();
-			}
-			if(Gdx.input.isKeyJustPressed(Input.Keys.L)){
-				applyDec();
-			}
-			if(Gdx.input.isKeyJustPressed(Input.Keys.K)){
-				applyShiftRight();
-			}
-			if(Gdx.input.isKeyJustPressed(Input.Keys.J)){
-				applyShiftLeft();
-			}
-			if(Gdx.input.isKeyJustPressed(Input.Keys.F)){
-				applyFreeze();
-			}
-			if(Gdx.input.isKeyJustPressed(Input.Keys.R)){
-				applyRandom();
-			}
-			if(Gdx.input.isKeyJustPressed(Input.Keys.I)){
-				applySwap();
-			}
-		}
-		
-		if(state == GameState.TIME_RUN){
-			updateLogic(delta);
-		}else{
-			if(endImage == null){
-				switch(state){
-				case TIME_DEATH:
-					endImage = new Image(skin, "end-death");
-					break;
-				case TIME_TWENTY_FOUR:
-					endImage = new Image(skin, "end-overtime");
-					break;
-				case TIME_ZERO:
-					endImage = new Image(skin, "end-timeout");
-					break;
+		if(!paused){
+			if(OverTime.DEBUG){
+				if(Gdx.input.isKeyJustPressed(Input.Keys.M)){
+					applyInc();
 				}
-				Image bg = new Image(skin, "white");
-				if(state == GameState.TIME_TWENTY_FOUR){
-					bg.setColor(0f, .3f, 0f, 1f);
-				}else{
-					bg.setColor(.3f, .0f, 0f, 1f);
+				if(Gdx.input.isKeyJustPressed(Input.Keys.L)){
+					applyDec();
 				}
-				stage.addActor(bg);
-				bg.getColor().a = 0;
-				bg.addAction(Actions.sequence(Actions.delay(1f), Actions.alpha(1f, 3f), Actions.color(Color.BLACK, 1f)));
-				bg.setSize(stage.getWidth(), stage.getHeight());
-				
-				stage.addActor(endImage);
-				endImage.setPosition(stage.getWidth()/2, stage.getHeight()/2, Align.center);
-				endImage.getColor().a = 0;
-				endImage.addAction(Actions.sequence(
-						Actions.delay(3f),
-						Actions.alpha(1f, 3f),
-						Actions.delay(2f),
-						Actions.run(new Runnable() {
-							@Override
-							public void run() {
-								gameOver = true;
-							}
-						})));
+				if(Gdx.input.isKeyJustPressed(Input.Keys.K)){
+					applyShiftRight();
+				}
+				if(Gdx.input.isKeyJustPressed(Input.Keys.J)){
+					applyShiftLeft();
+				}
+				if(Gdx.input.isKeyJustPressed(Input.Keys.F)){
+					applyFreeze();
+				}
+				if(Gdx.input.isKeyJustPressed(Input.Keys.R)){
+					applyRandom();
+				}
+				if(Gdx.input.isKeyJustPressed(Input.Keys.I)){
+					applySwap();
+				}
+			}
+			
+			if(state == GameState.TIME_RUN){
+				updateLogic(delta);
+			}else{
+				if(endImage == null){
+					switch(state){
+					case TIME_DEATH:
+						endImage = new Image(skin, "end-death");
+						break;
+					case TIME_TWENTY_FOUR:
+						endImage = new Image(skin, "end-overtime");
+						break;
+					case TIME_ZERO:
+						endImage = new Image(skin, "end-timeout");
+						break;
+					}
+					Image bg = new Image(skin, "white");
+					if(state == GameState.TIME_TWENTY_FOUR){
+						bg.setColor(0f, .3f, 0f, 1f);
+					}else{
+						bg.setColor(.3f, .0f, 0f, 1f);
+					}
+					stage.addActor(bg);
+					bg.getColor().a = 0;
+					bg.addAction(Actions.sequence(
+							Actions.delay(1f), 
+							Actions.alpha(1f, 3f)/*, 
+							Actions.color(Color.BLACK, 1f))*/
+							));
+					bg.setSize(stage.getWidth(), stage.getHeight());
+					
+					stage.addActor(endImage);
+					endImage.setPosition(stage.getWidth()/2, stage.getHeight()/2, Align.center);
+					endImage.getColor().a = 0;
+					endImage.addAction(Actions.sequence(
+							Actions.delay(3f),
+							Actions.alpha(1f, 3f),
+							Actions.delay(2f),
+							Actions.run(new Runnable() {
+								@Override
+								public void run() {
+									gameOver = true;
+								}
+							})));
+				}
 			}
 		}
 		
@@ -226,9 +252,10 @@ public class GameScreen extends ScreenAdapter
 		stage.act();
 		stage.draw();
 		
-		
-		if(gameOver || Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
-			OverTime.i().setScreen(new MenuScreen());
+		if(!paused){
+			if(gameOver || Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+				OverTime.i().setScreen(new MenuScreen());
+			}
 		}
 	}
 	

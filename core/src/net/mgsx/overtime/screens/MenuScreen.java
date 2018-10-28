@@ -27,6 +27,8 @@ public class MenuScreen extends ScreenAdapter
 
 	private Image title;
 	
+	private boolean enabled = false;
+	
 	public MenuScreen() {
 		skin = OverTime.i().skin;
 		
@@ -37,23 +39,6 @@ public class MenuScreen extends ScreenAdapter
 		stage.addActor(title = new Image(skin, "title"));
 		
 		title.getColor().a = 0;
-		title.addAction(Actions.sequence(
-				Actions.delay(.5f),
-				Actions.repeat(4, Actions.sequence(
-						Actions.alpha(1f, .05f),
-						Actions.alpha(.5f, .05f)
-						)),
-				Actions.alpha(0f),
-				Actions.alpha(1f, .2f),
-				Actions.forever(
-						Actions.sequence(
-								Actions.delay(10f),
-								Actions.repeat(3, Actions.sequence(
-										Actions.alpha(1f, .05f),
-										Actions.alpha(.5f, .05f)
-										)),
-				Actions.alpha(1f, .2f))
-				)));
 		
 		Image bt = new Image(skin, "start");
 		stage.addActor(bt);
@@ -76,11 +61,31 @@ public class MenuScreen extends ScreenAdapter
 	
 	@Override
 	public void show() {
+		enabled = true;
 		Gdx.input.setInputProcessor(stage);
+		
+		title.addAction(Actions.sequence(
+				Actions.delay(.5f),
+				Actions.repeat(4, Actions.sequence(
+						Actions.alpha(1f, .05f),
+						Actions.alpha(.5f, .05f)
+						)),
+				Actions.alpha(0f),
+				Actions.alpha(1f, .2f),
+				Actions.forever(
+						Actions.sequence(
+								Actions.delay(10f),
+								Actions.repeat(3, Actions.sequence(
+										Actions.alpha(1f, .05f),
+										Actions.alpha(.5f, .05f)
+										)),
+				Actions.alpha(1f, .2f))
+				)));
 	}
 	
 	@Override
 	public void hide() {
+		enabled = false;
 		Gdx.input.setInputProcessor(null);
 	}
 	
@@ -93,13 +98,14 @@ public class MenuScreen extends ScreenAdapter
 		stage.act();
 		stage.draw();
 		
-		if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
-			start();
+		if(enabled){
+			if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+				start();
+			}
 		}
 	}
 	
 	private void start() {
-		// TODO FX and switch to screen
 		OverTime.i().setScreen(new GameScreen());
 	}
 
