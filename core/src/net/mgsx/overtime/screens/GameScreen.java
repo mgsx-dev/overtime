@@ -85,6 +85,11 @@ public class GameScreen extends ScreenAdapter
 	
 	private boolean paused = true;
 	
+	private Array<Image> heroShadows = new Array<Image>();
+	
+	private final Vector2 posShadowPrev = new Vector2();
+	private final Vector2 posShadow = new Vector2();
+	
 	public GameScreen() {
 		skin = OverTime.i().skin;
 		
@@ -105,9 +110,21 @@ public class GameScreen extends ScreenAdapter
 		
 		spwanBonus(clockBonus.size/2);
 		
+		heroPosition.set(130, 2);
+		
+		float shadowAlpha = .5f;
+		for(int i=0 ; i<4 ; i++){
+			Image img = new Image(skin, "dot");
+			img.setColor(Color.RED);
+			img.getColor().a = shadowAlpha;
+			img.setPosition(heroPosition.x, heroPosition.y);
+			shadowAlpha *= .5f;
+			heroShadows.add(img);
+			stage.addActor(img);
+		}
+		
 		stage.addActor(hero);
 		
-		heroPosition.set(130, 2);
 		
 		world.enableBack(clockRank, false);
 		
@@ -345,6 +362,18 @@ public class GameScreen extends ScreenAdapter
 					}
 				}
 			}
+		}
+		
+		// update hero shadows
+		posShadowPrev.set(hero.getX(), hero.getY());
+		Color c = hero.getColor();
+		for(int i=0 ; i<heroShadows.size ; i++){
+			Image img = heroShadows.get(i);
+			img.setColor(c.r, c.g, c.b, img.getColor().a);
+			posShadow.set(img.getX(), img.getY());
+			posShadow.lerp(posShadowPrev, delta * 10f);
+			img.setPosition(posShadow.x, posShadow.y);
+			posShadowPrev.set(posShadow);
 		}
 		
 		// check clock bonus
