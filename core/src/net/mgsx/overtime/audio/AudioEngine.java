@@ -1,5 +1,6 @@
 package net.mgsx.overtime.audio;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
@@ -50,20 +51,37 @@ public class AudioEngine
 	private boolean randomDrone;
 	private float droneTimeout;
 	
+	private final boolean simpleDrone;
+	private float simpleDroneBase, simpleDroneTarget;
+	
 	public AudioEngine() 
 	{
 		for(String path : sfxPath){
 			sfx.add(Gdx.audio.newSound(Gdx.files.internal("sfx/" + path + ".wav")));
 		}
 		
-		sndDrone = Gdx.audio.newSound(Gdx.files.internal("audio/looped.wav"));
-		drone1 = sndDrone.loop(droneVolume(), .5f, .5f);
-		drone2 = sndDrone.loop(droneVolume(), .5f, -.5f);
+		simpleDrone = Gdx.app.getType() == ApplicationType.WebGL;
+		
+		if(simpleDrone){
+			sndDrone = Gdx.audio.newSound(Gdx.files.internal("audio/looped-pitched.wav"));
+			
+			drone1 = sndDrone.loop(droneVolume(), 1f, 0);
+		}else{
+			sndDrone = Gdx.audio.newSound(Gdx.files.internal("audio/looped.wav"));
+			
+			drone1 = sndDrone.loop(droneVolume(), .5f, .5f);
+			drone2 = sndDrone.loop(droneVolume(), .5f, -.5f);
+		}
 		
 		droneCurrent = droneBase = .25f;
+		
+		simpleDroneBase = simpleDroneTarget = 1f;
 	}
 	
 	private float droneVolume(){
+		if(simpleDrone){
+			return AUDIO_GENERAL;
+		}
 		return AUDIO_GENERAL * DRONE_GENERAL;
 	}
 	private float sfxVolume(){
@@ -100,11 +118,17 @@ public class AudioEngine
 		
 		droneCurrent = MathUtils.lerp(droneCurrent, droneBase, delta * droneTransitionSpeed);
 		
-		sndDrone.setPitch(drone1, MathUtils.lerp(droneCurrent, droneCurrent * 1.03f, MathUtils.sinDeg(audioTime * 100) * .5f + .5f));
-		sndDrone.setPitch(drone2, MathUtils.lerp(droneCurrent, droneCurrent * .99f, MathUtils.sinDeg(audioTime * 114 + 149) * .5f + .5f));
-	
-		sndDrone.setVolume(drone1, droneVolume());
-		sndDrone.setVolume(drone2, droneVolume());
+		if(simpleDrone){
+			simpleDroneTarget = MathUtils.lerp(simpleDroneTarget, simpleDroneBase, delta * droneTransitionSpeed);
+			sndDrone.setVolume(drone1, droneVolume() * simpleDroneTarget);
+			
+		}else{
+			sndDrone.setPitch(drone1, MathUtils.lerp(droneCurrent, droneCurrent * 1.03f, MathUtils.sinDeg(audioTime * 100) * .5f + .5f));
+			sndDrone.setPitch(drone2, MathUtils.lerp(droneCurrent, droneCurrent * .99f, MathUtils.sinDeg(audioTime * 114 + 149) * .5f + .5f));
+			
+			sndDrone.setVolume(drone1, droneVolume());
+			sndDrone.setVolume(drone2, droneVolume());
+		}
 	}
 
 	public void start() 
@@ -113,9 +137,11 @@ public class AudioEngine
 		droneCurrent = .25f;
 		droneBase = 1f; // XXX .7f
 		droneTransitionSpeed = 2f;
+		
+		simpleDroneBase = 1;
 	}
 	
-	public void setDroneTarget(float target){
+	private void setDroneTarget(float target){
 		droneBase = target;
 		droneTransitionSpeed = 2f;
 	}
@@ -123,10 +149,14 @@ public class AudioEngine
 	public void menuToGame() {
 		randomDrone = false;
 		AudioEngine.i().setDroneTarget(0.4f);
+		
+		simpleDroneBase = .5f;
 	}
 
 	public void gameToMenu() {
 		AudioEngine.i().setDroneTarget(0f);
+		
+		simpleDroneBase = 0;
 	}
 
 	public void menuBegin() {
