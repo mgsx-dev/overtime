@@ -12,16 +12,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import net.mgsx.game.core.annotations.Editable;
 import net.mgsx.overtime.OverTime;
 import net.mgsx.overtime.audio.AudioEngine;
 import net.mgsx.overtime.ui.MiniClock;
 import net.mgsx.overtime.utils.PixelPerfectViewport;
 
+@Editable
 public class MenuScreen extends ScreenAdapter
 {
 	private Stage stage;
 	
-	private Color bgColor = new Color(0,0,0,1);
+	@Editable
+	public Color bgColor = new Color(0,0,0,1);
 	private Skin skin;
 
 	private MiniClock miniClock;

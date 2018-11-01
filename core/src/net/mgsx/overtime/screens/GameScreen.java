@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
+import net.mgsx.game.core.annotations.Editable;
 import net.mgsx.overtime.OverTime;
 import net.mgsx.overtime.audio.AudioEngine;
 import net.mgsx.overtime.logic.ClockControl;
@@ -27,6 +28,7 @@ import net.mgsx.overtime.utils.ArrayUtils;
 import net.mgsx.overtime.utils.PixelPerfectViewport;
 import net.mgsx.overtime.utils.UniControl;
 
+@Editable
 public class GameScreen extends ScreenAdapter
 {
 	enum BonusMode{
@@ -435,7 +437,8 @@ public class GameScreen extends ScreenAdapter
 		}
 	}
 	
-	private void applySwap() {
+	@Editable
+	public void applySwap() {
 		timeInc = -timeInc;
 		if(timeInc > 0)
 			AudioEngine.i().sfxSwapUp();
@@ -443,7 +446,8 @@ public class GameScreen extends ScreenAdapter
 			AudioEngine.i().sfxSwapDown();
 	}
 
-	private void applyRandom() {
+	@Editable
+	public void applyRandom() {
 		// world.clock.randomize();
 		incClock(timeInc, 0, true);
 		incClock(timeInc, 1, true);
@@ -451,26 +455,31 @@ public class GameScreen extends ScreenAdapter
 		incClock(timeInc, 3, true);
 	}
 
-	private void applyShiftLeft() {
+	@Editable
+	public void applyShiftLeft() {
 		shiftClock(1);
 		AudioEngine.i().sfxShift();
 	}
-	private void applyShiftRight() {
+	@Editable
+	public void applyShiftRight() {
 		shiftClock(-1);
 		AudioEngine.i().sfxShift();
 	}
 
-	private void applyDec() {
+	@Editable
+	public void applyDec() {
 		incClock(-1, true, true);
 		AudioEngine.i().sfxInc();
 	}
 
-	private void applyInc() {
+	@Editable
+	public void applyInc() {
 		incClock(1, true, true);
 		AudioEngine.i().sfxInc();
 	}
 
-	private void applyFreeze() {
+	@Editable
+	public void applyFreeze() {
 		timeout = -10;
 		frozen = true;
 		

@@ -1,0 +1,1 @@
+branch kit POC : require gdx-editor project in classpath
